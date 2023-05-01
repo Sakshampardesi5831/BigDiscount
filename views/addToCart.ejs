@@ -1,0 +1,44 @@
+<% include ./partials/header.ejs %>
+<!--------------------------------add to cart structure------------------------------------------------>
+<div id="addtocartContainer">
+    <div id="addtocartheading">
+        <h3 style="font-weight: 700;" >Shopping Cart</h3>
+    </div>
+    <div id="addtocartbox">
+        <div id="addtocartSections">
+        <% user.addtocart.forEach(function(elem){%>
+            <div id="dynamic-section">
+                <div id="product-photo">
+                 <img src="../images/productimages/<%=elem.productPic%>" alt="">  
+                </div>
+                <div id="product-desc">
+                   <div id="product-title"><h2><%=elem.productName%></h2></div>
+                   <div id="increse_decrease">
+                    <div id="decrease"><a href=""><i class="ri-subtract-line"></i></a></div>
+                    <div id="counter"><h3><%=elem.quantity%></h3></div>
+                    <div id="increase"><a href=""><i class="ri-add-line"></i></a></div>  
+                   </div>
+                   <div id="product-price"> <h1 style="font-weight: 300; font-size: 2vw;">₹<%=elem.bill%></h1></div>
+                </div>
+             </div> 
+        <%})%>
+         
+        </div>
+        <div id="addtocartTotalSection">
+            <div id="addtocartTotal">
+                <div id="addtocartprices">
+                    <h3 style="font-size: 1.5vw;" >SUB-TOTAL &nbsp; :-</h3>
+                    <h1 style="font-weight: 800;"></h1>
+                </div>
+                <div id="addtoCartPay">
+                    <a href="" id="button-link">Check Out &nbsp;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------------------------------------------------------------------->
+
+
+
+<% include ./partials/footer.ejs %>

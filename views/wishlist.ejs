@@ -1,0 +1,19 @@
+<% include ./partials/header.ejs %>
+
+<div class="container">
+   <h1 class="mt-2">WISHLIST SECTION</h1>
+   <hr>
+   <div class="row" style="display: flex;">
+    <%user.wishlist.forEach(function(wp){%>
+      <div class="col-md-3">
+        <div class="product-image"><img src="../images/productimages/<%=wp.pic[0]%>" alt=""></div>
+        <h4>Product Name:- <%=wp.name%></h4>
+        <h4>Price:<%=wp.price%></h4>
+         <p>Description:<%=wp.desc%></p>
+     </div>
+    <%})%>
+    
+   </div>
+</div>
+
+<% include ./partials/footer.ejs %>
