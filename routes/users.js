@@ -1,8 +1,12 @@
+ require("dotenv").config({path:"./.env"});
  const mongoose=require("mongoose");
  var plm=require("passport-local-mongoose");
- mongoose.connect("mongodb://localhost/myamazon2")
-.then(function(){
-    console.log("connected to db");
+//  mongoose.connect("mongodb://localhost/myamazon2")
+// .then(function(){
+//     console.log("connected to db");XXe5ROoezVFTtwjv
+// })
+mongoose.connect(`mongodb+srv://sakshampardesi5831:${process.env.password}@cluster0.3fabgri.mongodb.net/myamazon?retryWrites=true&w=majority`).then(function(){
+  console.log('connected to db');
 })
 var userSchema= mongoose.Schema({
   username:String,
