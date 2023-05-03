@@ -213,6 +213,7 @@ router.get("/addtoCart/:id", isLoggedIn, async function (req, res) {
           productName:product.name,
           quantity:1,
           bill:product.price,
+          currentPrice:product.price,
           productPic:product.pic[0],
         } 
         let dummyOrders=await orders.create(data);
@@ -229,6 +230,7 @@ router.get("/addtoCart/:id", isLoggedIn, async function (req, res) {
       productName:product.name,
       quantity:1,
       bill:product.price,
+      currentPrice:product.price,
       productPic:product.pic[0],
     } 
     let dummyOrders=await orders.create(data);
@@ -241,18 +243,39 @@ router.get("/addtoCart/:id", isLoggedIn, async function (req, res) {
 router.get("/addtocart",isLoggedIn, async function(req,res){
    let user=await userModel.findOne({username:req.session.passport.user}).populate("addtocart");
   console.log(user);
-   res.render("addtocart",{user:user});
+  let total=0;
+   user.addtocart.forEach(function(elem){
+      total= total+elem.bill;
+   })
+   console.log(total);
+   res.render("addtocart",{user:user,total:total});
 })
 
-router.get("/increase/:id", isLoggedIn, async function (req, res) {
-  let user = await userModel
-    .findOne({ username: req.session.passport.user })
-    .populate("addtocart");
-  user.addtocart.forEach(function (elem) {
-        
-  });
-  res.json(user);
-});
+router.get("/quantityAdd/:id",isLoggedIn, async function(req,res){
+    let user=await userModel.findOne({username:req.session.passport.user}).populate("addtocart");
+    console.log(user);
+    const itemIndex=user.addtocart.findIndex((item)=>item._id==req.params.id);
+    console.log(itemIndex);
+    let myproduct=user.addtocart[itemIndex];
+    let myorders=await orders.findOne({_id:myproduct._id});
+    myorders.quantity+=1;
+    myorders.bill=myorders.currentPrice+myorders.bill;
+    myorders.save();
+    res.status(200).redirect("/addtocart");
+})
+router.get("/quantitySub/:id",isLoggedIn,async function(req,res){
+     let user=await userModel.findOne({username:req.session.passport.user}).populate("addtocart");
+     console.log(user);
+      const itemIndex=user.addtocart.findIndex((item)=> item._id==req.params.id);
+      console.log(itemIndex);
+      let myproduct=user.addtocart[itemIndex];
+      let myorders=await orders.findOne({_id:myproduct._id});
+      myorders.quantity-=1;
+      myorders.bill= Math.abs(myorders.bill-myorders.currentPrice);
+      myorders.save();
+      res.status(200).redirect("/addtocart");
+   
+})
 // LOGGED FUNCTION
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {

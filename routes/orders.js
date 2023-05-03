@@ -16,6 +16,10 @@ let orderSchema=mongoose.Schema({
     type:Number,
     default:0
    },
+   currentPrice:{
+     type:Number,
+     default:0
+   },
    bill:{
     type:Number,
     default:0
